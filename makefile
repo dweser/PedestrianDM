@@ -15,10 +15,23 @@ OBJECTS = diffusion.o         \
           str_fixed_length.o  \
           two_spec_iter.o
 
-## compiler
-CC = g++-6
+## compiler check
+# note: after OSX version 10.8, Apple shipped Macs with clang
+# 	compiler as standard, not gcc
+OS := $(shell uname)
+ifeq ($(OS), Darwin)
+	VERSIONGT8 := $(shell expr `sw_vers -productVersion | cut -d \. -f 2` \> 8)
+	ifeq ($(VERSIONGT8), 1)
+		CC = g++-6
+	else
+		CC = gcc
+	endif
+else
+	CC = gcc
+endif
+
 ## options for the compiler CFLAGs -g ("-assume bscc -xW -O2" or "-fbackslash -O2" to have \n)
-FLAGS = -fopenmp -O3
+FLAGS = -fopenmp -O2
 #LDFLAGS = -L/usr/openwin/lib
 #LDLIBS  = -lX11 -lXext
 ## the name of the executable
@@ -69,4 +82,4 @@ init :
 
 clean :
 	@rm -rf $(OBJDIR)/*.mod;
-	@rm $(OBJDIR)/*.o;
+	@rm -f $(OBJDIR)/*.o;
