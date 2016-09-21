@@ -1,6 +1,6 @@
 //
 //  str_fixed_length.hpp
-//  diffusion
+//  PedestrianDM
 //
 //  Created by Daniel Weser on 9/17/16.
 //  Copyright © 2016 Daniel Weser. All rights reserved.

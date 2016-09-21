@@ -3,8 +3,7 @@
 #########################
 
 ## objects
-
-OBJECTS = diffusion.o         \
+OBJECTS = main_pedestrianDM.o \
           fn_distance.o       \
           fn_file_print.o     \
           fn_neighbors.o      \
@@ -24,10 +23,10 @@ ifeq ($(OS), Darwin)
 	ifeq ($(VERSIONGT8), 1)
 		CC = g++-6
 	else
-		CC = gcc
+		CC = g++
 	endif
 else
-	CC = gcc
+	CC = g++
 endif
 
 ## options for the compiler CFLAGs -g ("-assume bscc -xW -O2" or "-fbackslash -O2" to have \n)
@@ -35,7 +34,7 @@ FLAGS = -fopenmp -O2
 #LDFLAGS = -L/usr/openwin/lib
 #LDLIBS  = -lX11 -lXext
 ## the name of the executable
-EXEC = diffusion
+EXEC = pedestrianDM
 
 ##----------------------------------------##
 ##            jobs for 'make'             ##
@@ -59,11 +58,11 @@ OBJECTS2 = $(addprefix $(OBJDIR)/, $(OBJECTS))
 all: init clean $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	@$(CC) $(FLAGS) -o $(EXECDIR)/$(EXEC) $(OBJECTS2);
+	@$(CC) $(FLAGS) -o $(EXECDIR)/$(EXEC) $(OBJECTS2)
 
 ## .o
 %.o: %.cpp
-	@$(CC) $(FLAGS) -c $^ -o $(OBJDIR)/$@ -J$(OBJDIR);
+	@$(CC) $(FLAGS) -c $^ -o $(OBJDIR)/$@ -J$(OBJDIR)
 
 ## create folder structure
 init :

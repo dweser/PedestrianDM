@@ -1,6 +1,6 @@
 //
 //  fn_neighbors.cpp
-//  diffusion
+//  PedestrianDM
 //
 //  Created by Daniel Weser on 9/14/16.
 //  Copyright © 2016 Daniel Weser. All rights reserved.

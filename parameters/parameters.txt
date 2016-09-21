@@ -5,7 +5,7 @@
 //TIME
 20
 //SPATIAL
-0
+1
 //LENGTH
 30
 //WIDTH
@@ -40,3 +40,5 @@ linear vm
 1
 //ISING_H
 -0.01
+//SEED NUMBER
+10

@@ -1,6 +1,6 @@
 //
 //  game_linear_vm.cpp
-//  diffusion
+//  PedestrianDM
 //
 //  Created by Daniel Weser on 9/14/16.
 //  Copyright © 2016 Daniel Weser. All rights reserved.
@@ -16,28 +16,28 @@
 #include <cstdlib>
 using namespace std;
 
-void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], PARAMETERS &parameters)
+void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], parameters &parameters)
 {
     long   N_i0 = 0;
     long   N_i1 = 0;
     double B_i0 = 0;
     double B_i1 = 0;
     
-    // parameters for speed(?)/convenience
-    float markov_rate = parameters.get_MARKOV_RATE();
-    float a_00 = parameters.get_a_00();
-    float a_01 = parameters.get_a_01();
-    float a_10 = parameters.get_a_10();
-    float a_11 = parameters.get_a_11();
-    float coop_const = parameters.get_COOP_CONST();
-    float guilt_const = parameters.get_GUILT_CONST();
-    float dt = parameters.get_DT();
+    // parameters for /convenience
+    float markov_rate = parameters.MARKOV_RATE;
+    float a_00 = parameters.a_00;
+    float a_01 = parameters.a_01;
+    float a_10 = parameters.a_10;
+    float a_11 = parameters.a_11;
+    float coop_const = parameters.COOP_CONST;
+    float guilt_const = parameters.GUILT_CONST;
+    float dt = parameters.DT;
     
     // loop
     #pragma omp parallel num_threads(4)
     {
         #pragma omp for
-        for (int i=0; i<parameters.get_N(); i++)
+        for (int i=0; i<parameters.N; i++)
         {
             // number of neighbors
             N_i0 = fn_count_states(neighbors[i], state, 0);

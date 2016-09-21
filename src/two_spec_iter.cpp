@@ -1,6 +1,6 @@
 //
 //  two_spec_iter.cpp
-//  diffusion
+//  PedestrianDM
 //
 //  Created by Daniel Weser on 9/14/16.
 //  Copyright © 2016 Daniel Weser. All rights reserved.
@@ -20,14 +20,14 @@
 #include <vector>
 using namespace std;
 
-void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], PARAMETERS &parameters)
+void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], parameters &parameters)
 {
     // new coordinates
-    if (parameters.get_SPATIAL())
+    if (parameters.SPATIAL)
     {
         double desired[2] = {0,0};
         int nb_j = 0;
-        double dxdy[parameters.get_N()][2];
+        double dxdy[parameters.N][2];
         double distance = 0;
         int num_neighbs = 0;
         
@@ -35,7 +35,7 @@ void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], PARAMETER
         #pragma omp parallel num_threads(4)
         {
             #pragma omp for
-            for (int i=0; i<parameters.get_N(); i++)
+            for (int i=0; i<parameters.N; i++)
             {
                 // summation for defective with phi_1
                 if (state[i])
@@ -50,11 +50,11 @@ void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], PARAMETER
                     for (int j=0; j<num_neighbs; j++)
                     {
                         nb_j = neighbors[i][j];
-                        distance = (double) fn_distance(xy[i][0], xy[i][1], xy[nb_j][0], xy[nb_j][1]);
+                        distance = fn_distance(xy[i][0], xy[i][1], xy[nb_j][0], xy[nb_j][1]);
                         
                         // desired + phi_1(d(x_j,x_i))*(x_j-x_i)/d(x_j,x_i)
-                        dxdy[i][0] += (double) fn_phi1(distance, parameters.get_R_DEF()) * (xy[i][0] - xy[nb_j][0])/distance;
-                        dxdy[i][1] += (double) fn_phi1(distance, parameters.get_R_DEF()) * (xy[i][1] - xy[nb_j][1])/distance;
+                        dxdy[i][0] += fn_phi1(distance, parameters.R_DEF) * (xy[i][0] - xy[nb_j][0])/distance;
+                        dxdy[i][1] += fn_phi1(distance, parameters.R_DEF) * (xy[i][1] - xy[nb_j][1])/distance;
                     }
                 } else
                 // summation for cooperative with phi_0
@@ -70,21 +70,21 @@ void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], PARAMETER
                     for (int j=0; j<num_neighbs; j++)
                     {
                         nb_j = neighbors[i][j];
-                        distance = (double) fn_distance(xy[i][0], xy[i][1], xy[nb_j][0], xy[nb_j][1]);
+                        distance = fn_distance(xy[i][0], xy[i][1], xy[nb_j][0], xy[nb_j][1]);
                         
                         // desired + phi_0(d(x_j,x_i))*(x_j-x_i)/d(x_j,x_i)
-                        dxdy[i][0] += (double) fn_phi0(distance, parameters.get_R_COOP()) * (xy[i][0] - xy[nb_j][0])/distance;
-                        dxdy[i][1] += (double) fn_phi0(distance, parameters.get_R_COOP()) * (xy[i][1] - xy[nb_j][1])/distance;
+                        dxdy[i][0] += fn_phi0(distance, parameters.R_COOP) * (xy[i][0] - xy[nb_j][0])/distance;
+                        dxdy[i][1] += fn_phi0(distance, parameters.R_COOP) * (xy[i][1] - xy[nb_j][1])/distance;
                     }
                 }
             }
         }
         // commit changes
         #pragma omp for
-        for (int i=0; i<parameters.get_N(); i++)
+        for (int i=0; i<parameters.N; i++)
         {
-            xy[i][0] += dxdy[i][0]*parameters.get_DT();
-            xy[i][1] += dxdy[i][1]*parameters.get_DT();
+            xy[i][0] += dxdy[i][0] * ( (double) parameters.DT );
+            xy[i][1] += dxdy[i][1] * ( (double) parameters.DT ) ;
         }
 
     }
