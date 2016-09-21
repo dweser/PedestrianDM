@@ -15,13 +15,11 @@
 #include "str_fixed_length.hpp"
 
 
-#include <stdio.h>
-#include <iostream>
 #include <math.h>
 #include <time.h>
 #include <vector>
 #include <string>
-#include <algorithm>
+#include <cstring>
 using namespace std;
 
 

@@ -9,9 +9,6 @@
 #ifndef fn_distance_hpp
 #define fn_distance_hpp
 
-#include <stdio.h>
-#include <cmath>
-
 double fn_distance(double x1, double y1, double x2, double y2);
 bool fn_distance_lt(double x1, double y1, double x2, double y2, double radius);
 

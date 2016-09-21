@@ -11,9 +11,7 @@
 #include "fn_neighbors.hpp"
 
 #include <omp.h>
-#include <vector>
 #include <math.h>
-#include <cstdlib>
 using namespace std;
 
 void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], parameters &parameters)

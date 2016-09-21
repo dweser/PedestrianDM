@@ -10,11 +10,8 @@
 #define fn_file_print_hpp
 
 #include <string>
-#include <fstream>
-#include <sstream>
-using namespace std;
 
-void fn_file_print_xy(double xy[][2], string path, int n, string iter_string, int seed_num);
-void fn_file_print_state(bool state[], string path, int n, string iter_string, int seed_num);
+void fn_file_print_xy(double xy[][2], std::string path, int n, std::string iter_string, int seed_num);
+void fn_file_print_state(bool state[], std::string path, int n, std::string iter_string, int seed_num);
 
 #endif /* fn_file_print_hpp */

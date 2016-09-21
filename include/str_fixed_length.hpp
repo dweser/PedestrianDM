@@ -10,7 +10,6 @@
 #define str_fixed_length_hpp
 
 #include <string>
-#include <algorithm>
 
 std::string str_fixed_length(int value, int digits = 9);
 

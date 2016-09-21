@@ -9,8 +9,6 @@
 #ifndef fn_phi_hpp
 #define fn_phi_hpp
 
-#include <stdio.h>
-
 double fn_phi0(double distance, float r_coop);
 double fn_phi1(double distance, float r_def);
 

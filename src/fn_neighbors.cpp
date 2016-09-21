@@ -10,10 +10,6 @@
 #include "fn_distance.hpp"
 
 #include <omp.h>
-#include <iostream>
-#include <stdio.h>
-#include <cmath>
-#include <cstring>
 #include <vector>
 using namespace std;
 
