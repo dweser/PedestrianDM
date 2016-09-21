@@ -30,7 +30,7 @@ else
 endif
 
 ## options for the compiler CFLAGs -g ("-assume bscc -xW -O2" or "-fbackslash -O2" to have \n)
-FLAGS = -fopenmp -O2
+FLAGS = -fopenmp -O2 -Iinclude
 #LDFLAGS = -L/usr/openwin/lib
 #LDLIBS  = -lX11 -lXext
 ## the name of the executable
@@ -42,9 +42,10 @@ EXEC = pedestrianDM
 
 ## Source tree:
 #    Makefile
-#    -- src/   *.cpp
-#    -- build/ *.o *.mod
-#    -- bin/   $(EXE)
+#    -- src/      *.cpp
+#	 -- include/  *.hpp
+#    -- build/    *.o *.mod
+#    -- bin/      $(EXE)
 
 ## Paths
 OBJDIR = build

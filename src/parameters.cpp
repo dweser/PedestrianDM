@@ -131,9 +131,3 @@ parameters::parameters(string file_path)
         if ( ! (istringstream(line) >> SEED_NUMBER) ) exit(-2);
     }
 }
-
-
-
-
-
-
