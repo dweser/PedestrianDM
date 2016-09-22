@@ -14,6 +14,8 @@
 #include "fn_file_print.hpp"
 #include "str_fixed_length.hpp"
 
+#include <cstdlib>
+#include <cstdio>
 #include <math.h>
 #include <time.h>
 #include <vector>
