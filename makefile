@@ -10,7 +10,7 @@ OBJECTS = main_pedestrianDM.o \
           fn_phi.o            \
           game_linear_vm.o    \
           init_functions.o    \
-          parameters.o        \
+          parameters_xml.o    \
           str_fixed_length.o  \
           two_spec_iter.o
 

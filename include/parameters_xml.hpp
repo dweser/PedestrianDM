@@ -1,13 +1,13 @@
 //
-//  parameters.hpp
+//  parameters_xml.hpp
 //  PedestrianDM
 //
 //  Created by Daniel Weser on 9/15/16.
 //  Copyright © 2016 Daniel Weser. All rights reserved.
 //
 
-#ifndef parameters_hpp
-#define parameters_hpp
+#ifndef parameters_xml_hpp
+#define parameters_xml_hpp
 
 #include <string>
 
@@ -39,4 +39,4 @@ struct parameters
     parameters(std::string file_path);
 };
 
-#endif /* parameters_class_hpp */
+#endif /* parameters_xml_hpp */

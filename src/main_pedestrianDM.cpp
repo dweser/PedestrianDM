@@ -6,7 +6,7 @@
 //  Copyright © 2016 Daniel Weser. All rights reserved.
 //
 
-#include "parameters.hpp"
+#include "parameters_xml.hpp"
 #include "init_functions.hpp"
 #include "two_spec_iter.hpp"
 #include "fn_neighbors.hpp"
@@ -14,21 +14,21 @@
 #include "fn_file_print.hpp"
 #include "str_fixed_length.hpp"
 
-
 #include <math.h>
 #include <time.h>
 #include <vector>
 #include <string>
 #include <cstring>
+#include <boost/boost_progress.hpp>
 using namespace std;
 
 
 int main(int argc, char *argv[])
 {
     // parameters construction
-    parameters parameters("../parameters/parameters.txt");
+    parameters parameters("../parameters/parameters.xml");
     int N = parameters.N;
-    
+
     // values calculated based on parameters
     const int     NUM_DEFECT_INIT = round(N/2);
     const int     NTIME = floor(parameters.TIME/parameters.DT+.5);
@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
     // clock for elapsed time output
     clock_t time;
     double elapsed = 0;
+    boost::progress_display show_progress( NTIME/5 );
     
     
     // generate initial condition
@@ -102,11 +103,13 @@ int main(int argc, char *argv[])
         
         // new xy-coordinates
         two_spec_iter(xy, state, neighbors, parameters);
+
+        if (t % 5 == 0)
+            ++show_progress;
     }
     
-
     elapsed = clock() - time;
-    printf ("Run time: %f seconds\n",((float)elapsed)/CLOCKS_PER_SEC);
+    printf ("Elapsed time: %f seconds\n",((float)elapsed)/CLOCKS_PER_SEC);
     
     return 0;
 }

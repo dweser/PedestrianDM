@@ -7,7 +7,7 @@
 //
 
 #include "game_linear_vm.hpp"
-#include "parameters.hpp"
+#include "parameters_xml.hpp"
 #include "fn_neighbors.hpp"
 
 #include <omp.h>

@@ -9,7 +9,7 @@
 #include "two_spec_iter.hpp"
 #include "fn_phi.hpp"
 #include "fn_distance.hpp"
-#include "parameters.hpp"
+#include "parameters_xml.hpp"
 #include "fn_neighbors.hpp"
 
 #include <omp.h>

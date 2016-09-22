@@ -9,7 +9,7 @@
 #ifndef two_spec_iter_hpp
 #define two_spec_iter_hpp
 
-#include "parameters.hpp"
+#include "parameters_xml.hpp"
 
 void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], parameters &parameters);
 
