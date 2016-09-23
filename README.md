@@ -1,5 +1,5 @@
 
-Program *PedestrianDM*
+PedestrianDM
 =========================
 
 **Table of Contents**
@@ -15,7 +15,7 @@ From the main folder `PedestrianDM`, execute the `makefile`:
 ```bash
 	> make
 ```
-The compiler will create the executable file `./PedestrianDM` in the directory `bin`. By default, the makefile uses the *g++* compiler with MacOS version detection to avoid Clang.
+The compiler will create the executable file `PedestrianDM` in the directory `bin`. By default, the makefile uses the *g++* compiler with MacOS version detection to avoid Clang.
 
 ## Program execution
 
@@ -84,7 +84,7 @@ It uses different modules (defined in separated files):
 | `fn_neighbors`                    | finds neighbors of all players
 | `fn_distance`                     | calculates distance between points using Euclidean metric
 | `fn_phi`                          | calculates values of the function `phi`
-| `parameters_xml'                  | creates and fills parameters structure from XML file
+| `parameters_xml`                  | creates and fills parameters structure from XML file
 | `fn_file_print`                   | writes `X` and `S` to binary files
 | `str_fixed_length`                | creates string of iteration number for file name
 
@@ -108,6 +108,5 @@ The architecture of the program is the following:
 
 ## Legal notice information
 
- This (modest) program is distributed under the GNU GPL license version 2. More
-information are available in the file COPYING.txt. For any information or bugs,
+ This program is distributed under the GNU GPL license version 2. For any information or bugs,
 please contact me at: `dweser[at]asu.edu`.
