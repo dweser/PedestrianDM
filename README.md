@@ -35,14 +35,13 @@ execution time.
 
 ## Output
 
-The program `PedestrianDM` will save the trajectory and the strategy of each particle at each
-time. The `makefile` will create the directory 'data', where the program will store the files:
+The program `PedestrianDM` will write the trajectories and the strategies of each particle at each
+time step as binary files. The `makefile` will create the directory `data`, where the program will store the aforementioned binary files:
 * `particleX_******`     : x coordinate of the particles
 * `particleY_******`     : y coordinate of the particles
 * `particleS_******`     : s strategy of the particles,
 
-with `******` a counter of time step.
-
+where the value `******` is a counter of the time step.
 
 ## Parameters
 
