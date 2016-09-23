@@ -101,8 +101,8 @@ The architecture of the program is the following:
   %%      -> loop in time                                                       %%
   %%        A) update strategy S                                                %%
   %%        B) update position X                                                %%
-  %%        D) write trajectories  ("FilePrint")                                %%
-  %%      -<                                                                    %%
+  %%        D) write trajectories                                               %%
+  %%                                                                            %%
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ```
 
