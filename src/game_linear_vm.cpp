@@ -10,6 +10,7 @@
 #include "parameters_xml.hpp"
 #include "fn_neighbors.hpp"
 
+#include <cstdlib>
 #include <omp.h>
 #include <math.h>
 using namespace std;

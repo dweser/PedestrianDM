@@ -21,7 +21,7 @@
 #include <vector>
 #include <string>
 #include <cstring>
-#include <boost/boost_progress.hpp>
+// #include <boost/boost_progress.hpp>
 using namespace std;
 
 
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     // clock for elapsed time output
     clock_t time;
     double elapsed = 0;
-    boost::progress_display show_progress( NTIME/5 );
+    // boost::progress_display show_progress( NTIME/5 );
     
     
     // generate initial condition
@@ -106,8 +106,8 @@ int main(int argc, char *argv[])
         // new xy-coordinates
         two_spec_iter(xy, state, neighbors, parameters);
 
-        if (t % 5 == 0)
-            ++show_progress;
+        // if (t % 5 == 0)
+        //     ++show_progress;
     }
     
     elapsed = clock() - time;
