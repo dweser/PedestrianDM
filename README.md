@@ -26,7 +26,7 @@ To execute the program, run the binary file:
 ```
 The program reads the XML file `parameters/parameters.xml` and executes the program following those instructions. See the section [Parameters](#parameters) below.
 
-NOTE: Since the parameters are written in XML, white space is NOT ignore, e.g. `<IC>lattice</IC>` is not the same value as `<IC>  lattice  <\IC<'. While indentations and text-aligning looks cleaner, it should not be used in XML files.
+NOTE: Since the parameters are written in XML, white space is NOT ignore, e.g. `<IC>lattice</IC>` is not the same value as `<IC>  lattice  <\IC>`. While indentations and text-aligning looks cleaner, it should not be used in XML files.
 
 During execution, the program  `PedestrianDM` will compute the positions
 (`X`) and the strategies (`S`) of the particles at each time step. In the
