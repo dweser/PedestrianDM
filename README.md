@@ -1,5 +1,5 @@
 
-PedestrianDM*
+Program *PedestrianDM*
 =========================
 
 **Table of Contents**
