@@ -28,9 +28,9 @@ vector<int> generateRange(int a, int b, int c)
 // equivalent to "meshgrid" function in MATLAB
 void meshGrid(vector< vector<int> >& array1, vector< vector<int> >& array2, vector<int> linspace1, vector<int> linspace2)
 {
-    for (int col=0; col<linspace1.size(); col++)
+    for (unsigned int col=0; col<linspace1.size(); col++)
     {
-        for (int row=0; row<linspace2.size(); row++)
+        for (unsigned int row=0; row<linspace2.size(); row++)
         {
             array1[row][col] = linspace1[col];
             array2[row][col] = linspace2[row];
@@ -50,15 +50,12 @@ void randomArray(double array[][2], int N)
 }
 
 // uniform random x
-void uniformXY(double xy[][2], int N, float spread)
-{
-    double randXY[N][2];
-    randomArray(randXY, N);
-    
+void uniformXY(double xy[][2], int N, float spread, int length, int width)
+{    
     for (int i=0; i<N; i++)
     {
-        xy[i][0] = spread * randXY[i][0];
-        xy[i][1] = spread * randXY[i][1];
+        xy[i][0] = spread * length * rand()/RAND_MAX;
+        xy[i][1] = spread * width  * rand()/RAND_MAX;
     }
 }
 

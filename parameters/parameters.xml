@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <parameters>
   <N>10000</N>
-  <DT>0.1</DT>
-  <TIME>20</TIME>
+  <DT>.001</DT>
+  <TIME>2</TIME>
   <SPATIAL>1</SPATIAL>
-  <LENGTH>30</LENGTH>
-  <WIDTH>30</WIDTH>
-  <IC>lattice</IC>
+  <LENGTH>100</LENGTH>
+  <WIDTH>100</WIDTH>
+  <IC>uniform</IC>
   <SPREAD>1</SPREAD>
-  <R_COOP>4.1</R_COOP>
-  <R_DEF>2.1</R_DEF>
+  <R_COOP>2.1</R_COOP>
+  <R_DEF>1.1</R_DEF>
   <DECISION_MODEL>linear vm</DECISION_MODEL>
   <a_00>1</a_00>
   <a_01>0</a_01>

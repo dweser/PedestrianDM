@@ -29,7 +29,10 @@ else
 	CC = g++
 endif
 
-## options for the compiler CFLAGs -g ("-assume bscc -xW -O2" or "-fbackslash -O2" to have \n)
+## options for the compiler CFLAGs
+# 	fopenmp  : include OpenMP
+# 	02 		 : optimize
+#	Iinclude : search for headers in folder "include"
 FLAGS = -fopenmp -O2 -Iinclude
 #LDFLAGS = -L/usr/openwin/lib
 #LDLIBS  = -lX11 -lXext

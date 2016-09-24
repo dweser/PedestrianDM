@@ -15,7 +15,7 @@
 #include <math.h>
 using namespace std;
 
-void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], parameters &parameters)
+void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     long   N_i0 = 0;
     long   N_i1 = 0;
@@ -31,9 +31,9 @@ void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], paramete
     float coop_const = parameters.COOP_CONST;
     float guilt_const = parameters.GUILT_CONST;
     float dt = parameters.DT;
-    
+
     // loop
-    #pragma omp parallel num_threads(4)
+    #pragma omp parallel num_threads(NUM_THREADS)
     {
         #pragma omp for
         for (int i=0; i<parameters.N; i++)
@@ -41,7 +41,7 @@ void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], paramete
             // number of neighbors
             N_i0 = fn_count_states(neighbors[i], state, 0);
             N_i1 = fn_count_states(neighbors[i], state, 1);
-            
+
             // payoffs
             B_i0 = markov_rate * (a_00*N_i0 + a_01*N_i1 + coop_const);
             B_i1 = markov_rate * (a_10*N_i0 + a_11*N_i1 + guilt_const);

@@ -15,19 +15,19 @@
 #include <omp.h>
 using namespace std;
 
-void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], parameters &parameters)
+void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     // new coordinates
     if (parameters.SPATIAL)
     {
         double desired[2] = {0,0};
-        int nb_j = 0;
         double dxdy[parameters.N][2];
         double distance = 0;
+        int nb_j = 0;
         int num_neighbs = 0;
         
         // loop
-        #pragma omp parallel num_threads(4)
+        #pragma omp parallel num_threads(NUM_THREADS)
         {
             #pragma omp for
             for (int i=0; i<parameters.N; i++)

@@ -11,6 +11,6 @@
 
 #include "parameters_xml.hpp"
 
-void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], parameters &parameters);
+void two_spec_iter(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS);
 
 #endif /* two_spec_iter_hpp */

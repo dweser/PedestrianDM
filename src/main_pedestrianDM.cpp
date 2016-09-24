@@ -14,14 +14,15 @@
 #include "fn_file_print.hpp"
 #include "str_fixed_length.hpp"
 
+#include <stdlib.h>
 #include <cstdlib>
 #include <cstdio>
 #include <math.h>
-#include <time.h>
+#include <chrono>
+#include <ctime>
 #include <vector>
 #include <string>
 #include <cstring>
-// #include <boost/boost_progress.hpp>
 using namespace std;
 
 
@@ -34,24 +35,25 @@ int main(int argc, char *argv[])
     // values calculated based on parameters
     const int     NUM_DEFECT_INIT = round(N/2);
     const int     NTIME = floor(parameters.TIME/parameters.DT+.5);
-    
+    const int     NUM_THREADS = ceil((double) N/2000);
+
     // main structures
     double  xy[N][2];
     bool    state[N];
     int     neighbors[N][100];
     
     // file name and number string for data writing
-    string file_path = "../data/";
+    string data_path = "../data/";
     string num_str = "";
+    string shell_command = "for f in " + data_path + '*' + "; do rm $f; done";
+    system(shell_command.c_str());
     
     // seed random number generator
     srand(parameters.SEED_NUMBER);
     
     // clock for elapsed time output
-    clock_t time;
-    double elapsed = 0;
-    // boost::progress_display show_progress( NTIME/5 );
-    
+    chrono::time_point<chrono::system_clock> start, end;
+
     
     // generate initial condition
     if (parameters.IC == "lattice" || parameters.IC == "block")
@@ -76,42 +78,39 @@ int main(int argc, char *argv[])
         }
     } else
     {
-        uniformXY(xy, N, parameters.SPREAD);
+        uniformXY(xy, N, parameters.SPREAD, parameters.LENGTH, parameters.WIDTH);
     }
-    
+
     // generate states
     initState(state, N, NUM_DEFECT_INIT, parameters.DECISION_MODEL, parameters.IC);
-    
-    
+
+
     // iteration
-    time = clock();
+    start = chrono::system_clock::now();
     for (int t=0; t<NTIME; t++)
     {
         // write data
         num_str = str_fixed_length(t);
-        fn_file_print_xy(xy, file_path, N, num_str, parameters.SEED_NUMBER);
-        fn_file_print_state(state, file_path, N, num_str, parameters.SEED_NUMBER);
-        
+        fn_file_print_xy(xy, data_path, N, num_str, parameters.SEED_NUMBER);
+        fn_file_print_state(state, data_path, N, num_str, parameters.SEED_NUMBER);
         
         // set neighbors to all -1's
-        memset(neighbors, -1, sizeof(int)*N*2);
-        fn_neighbors(xy, state, neighbors, N, parameters.R_COOP, parameters.R_DEF);
-        
+        memset(neighbors, -1, sizeof(int)*N*100);
+        fn_neighbors(xy, state, neighbors, N, parameters.R_COOP, parameters.R_DEF, NUM_THREADS);
+
         // new states
         if (parameters.DECISION_MODEL == "linear vm")
         {
-            game_linear_vm(xy, state, neighbors, parameters);
+            game_linear_vm(xy, state, neighbors, parameters, NUM_THREADS);
         }
         
         // new xy-coordinates
-        two_spec_iter(xy, state, neighbors, parameters);
-
-        // if (t % 5 == 0)
-        //     ++show_progress;
+        two_spec_iter(xy, state, neighbors, parameters, NUM_THREADS);
     }
     
-    elapsed = clock() - time;
-    printf ("Elapsed time: %f seconds\n",((float)elapsed)/CLOCKS_PER_SEC);
+    end = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = end-start;
+    printf ("Elapsed time: %f seconds\n",(float) elapsed_seconds.count());
     
     return 0;
 }

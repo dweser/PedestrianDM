@@ -11,7 +11,7 @@
 
 #include "fn_distance.hpp"
 
-void fn_neighbors(double xy[][2], bool state[], int neighbors[][100], int n, float r_coop, float r_def);
+void fn_neighbors(double xy[][2], bool state[], int neighbors[][100], int n, float r_coop, float r_def, const int NUM_THREADS);
 int fn_count_states(int neighbors[100], bool state[], int target);
 int fn_count_neighbors(int neighbors[100]);
 

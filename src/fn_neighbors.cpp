@@ -13,13 +13,13 @@
 #include <vector>
 using namespace std;
 
-void fn_neighbors(double xy[][2], bool state[], int neighbors[][100], int n, float r_coop, float r_def)
+void fn_neighbors(double xy[][2], bool state[], int neighbors[][100], int n, float r_coop, float r_def, const int NUM_THREADS)
 {
     // vector of counters for keeping track of the number of neighbors each player has
     vector<int> count_neighbors(n);
     int count_init = 0;
-    
-    #pragma omp parallel num_threads(4)
+
+    #pragma omp parallel num_threads(NUM_THREADS)
     {
         #pragma omp for
         // loop through players and check all players above them to see if they're within distance r
