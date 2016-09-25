@@ -1,12 +1,12 @@
 //
-//  game_linear_vm.cpp
+//  game_norm_vm.cpp
 //  PedestrianDM
 //
-//  Created by Daniel Weser on 9/14/16.
+//  Created by Daniel Weser on 9/24/16.
 //  Copyright © 2016 Daniel Weser. All rights reserved.
 //
 
-#include "game_linear_vm.hpp"
+#include "game_norm_vm.hpp"
 #include "parameters_xml.hpp"
 #include "fn_neighbors.hpp"
 
@@ -15,12 +15,14 @@
 #include <math.h>
 using namespace std;
 
-void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_norm_vm(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     long   N_i0 = 0;
     long   N_i1 = 0;
     double B_i0 = 0;
     double B_i1 = 0;
+    double temp_B0 = 0;
+    double temp_B1 = 0;
     
     // parameters for /convenience
     float markov_rate = parameters.MARKOV_RATE;
@@ -43,8 +45,10 @@ void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], paramete
             N_i1 = fn_count_states(neighbors[i], state, 1);
 
             // payoffs
-            B_i0 = markov_rate * (a_00*N_i0 + a_01*N_i1 + coop_const);
-            B_i1 = markov_rate * (a_10*N_i0 + a_11*N_i1 - guilt_const);
+            temp_B0 = a_00*N_i0 + a_01*N_i1 + coop_const;
+            temp_B1 = a_10*N_i0 + a_11*N_i1 - guilt_const;
+            B_i0 = markov_rate * temp_B0 / (temp_B0 + temp_B1);
+            B_i1 = markov_rate * temp_B1 / (temp_B0 + temp_B1);
             
             // state change
             if (state[i]==0)

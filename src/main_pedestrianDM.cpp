@@ -10,9 +10,13 @@
 #include "init_functions.hpp"
 #include "two_spec_iter.hpp"
 #include "fn_neighbors.hpp"
-#include "game_linear_vm.hpp"
 #include "fn_file_print.hpp"
 #include "str_fixed_length.hpp"
+#include "game_linear_vm.hpp"
+#include "game_norm_vm.hpp"
+#include "game_threshold_vm.hpp"
+#include "game_br.hpp"
+#include "game_ising.hpp"
 
 #include <stdlib.h>
 #include <cstdlib>
@@ -102,6 +106,18 @@ int main(int argc, char *argv[])
         if (parameters.DECISION_MODEL == "linear vm")
         {
             game_linear_vm(xy, state, neighbors, parameters, NUM_THREADS);
+        } else if (parameters.DECISION_MODEL == "norm vm")
+        {
+            game_norm_vm(xy, state, neighbors, parameters, NUM_THREADS);
+        } else if (parameters.DECISION_MODEL == "threshold vm")
+        {
+            game_threshold_vm(xy, state, neighbors, parameters, NUM_THREADS);
+        } else if (parameters.DECISION_MODEL == "br")
+        {
+            game_br(xy, state, neighbors, parameters, NUM_THREADS);
+        } else
+        {
+            game_ising(xy, state, neighbors, parameters, NUM_THREADS);
         }
         
         // new xy-coordinates

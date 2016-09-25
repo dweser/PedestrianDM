@@ -8,11 +8,15 @@ OBJECTS = main_pedestrianDM.o \
           fn_file_print.o     \
           fn_neighbors.o      \
           fn_phi.o            \
-          game_linear_vm.o    \
           init_functions.o    \
           parameters_xml.o    \
           str_fixed_length.o  \
-          two_spec_iter.o
+          two_spec_iter.o     \
+          game_linear_vm.o    \
+          game_norm_vm.o 	  \
+          game_threshold_vm.o \
+          game_br.o           \
+          game_ising.o
 
 ## compiler check
 # note: after OSX version 10.8, Apple shipped Macs with clang

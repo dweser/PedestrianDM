@@ -1,12 +1,12 @@
 //
-//  game_linear_vm.cpp
+//  game_br.cpp
 //  PedestrianDM
 //
-//  Created by Daniel Weser on 9/14/16.
+//  Created by Daniel Weser on 9/24/16.
 //  Copyright © 2016 Daniel Weser. All rights reserved.
 //
 
-#include "game_linear_vm.hpp"
+#include "game_br.hpp"
 #include "parameters_xml.hpp"
 #include "fn_neighbors.hpp"
 
@@ -15,7 +15,7 @@
 #include <math.h>
 using namespace std;
 
-void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_br(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     long   N_i0 = 0;
     long   N_i1 = 0;
@@ -43,16 +43,24 @@ void game_linear_vm(double xy[][2], bool state[], int neighbors[][100], paramete
             N_i1 = fn_count_states(neighbors[i], state, 1);
 
             // payoffs
-            B_i0 = markov_rate * (a_00*N_i0 + a_01*N_i1 + coop_const);
-            B_i1 = markov_rate * (a_10*N_i0 + a_11*N_i1 - guilt_const);
+            B_i0 = a_00*N_i0 + a_01*N_i1 + coop_const;
+            B_i1 = a_10*N_i0 + a_11*N_i1 + guilt_const;
             
             // state change
             if (state[i]==0)
             {
-                state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-B_i1*dt)))==1;
+                // if B1>B0, they jump with rate 1 scaled by the "markov rate" and "dt"
+                // otherwise, they don't jump
+                if (B_i1 > B_i0)
+                {
+                    state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-markov_rate*dt)))==1;
+                }
             } else
             {
-                state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-B_i0*dt)))==0;
+                if (B_i0 > B_i1)
+                {
+                    state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-markov_rate*dt)))==0;
+                }
             }
         }
     }
