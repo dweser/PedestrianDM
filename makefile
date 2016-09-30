@@ -37,7 +37,7 @@ endif
 # 	fopenmp  : include OpenMP
 # 	02 		 : optimize
 #	Iinclude : search for headers in folder "include"
-FLAGS = -fopenmp -O2 -Iinclude
+FLAGS = -fopenmp -O2 -Iinclude -std=c++11
 #LDFLAGS = -L/usr/openwin/lib
 #LDLIBS  = -lX11 -lXext
 ## the name of the executable

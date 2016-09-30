@@ -7,86 +7,87 @@
 //
 
 #include "parameters_xml.hpp"
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
+#include "rapidxml-1.13/rapidxml.hpp"
+#include "rapidxml-1.13/rapidxml_utils.hpp"
 #include <string>
 using namespace std;
+using namespace rapidxml;
 
 parameters::parameters(string file_path)
 {
-    string line;
+    // Create an empty xml document object
+    xml_document<> doc;
 
-    // Create an empty property tree object
-    using boost::property_tree::ptree;
-    ptree pt;
+    // Load the XML file into the xml object and parse it
+    file<> xmlFile(file_path.c_str());
+    doc.parse<0>(xmlFile.data());
 
-    // Load the XML file into the property tree. If reading fails
-    // (cannot open file, parse error), an exception is thrown.
-    read_xml(file_path, pt);
+    // find the root node
+    xml_node<>* root = doc.first_node("parameters");
     
     // N
-    N = pt.get<int>("parameters.N");
+    N = atoi(root->first_node("N")->value());
 
     // DT
-    DT = pt.get<float>("parameters.DT");
+    DT = atof(root->first_node("DT")->value());
     
     // TIME
-    TIME = pt.get<int>("parameters.TIME");
+    TIME = atoi(root->first_node("TIME")->value());
     
     // SPATIAL
-    SPATIAL = pt.get<bool>("parameters.SPATIAL");
+    SPATIAL = (bool) atoi(root->first_node("SPATIAL")->value());
     
     // LENGTH
-    LENGTH = pt.get<int>("parameters.LENGTH");
+    LENGTH = atoi(root->first_node("LENGTH")->value());
     
     // WIDTH
-    WIDTH = pt.get<int>("parameters.WIDTH");
+    WIDTH = atoi(root->first_node("WIDTH")->value());
     
     // IC
-    IC = pt.get<string>("parameters.IC");
+    WIDTH = atoi(root->first_node("WIDTH")->value());
     
     // SPREAD
-    SPREAD = pt.get<float>("parameters.SPREAD");
+    SPREAD = atof(root->first_node("SPREAD")->value());
     
     // R_COOP
-    R_COOP = pt.get<float>("parameters.R_COOP");
+    R_COOP = atof(root->first_node("R_COOP")->value());
     
     // R_DEF
-    R_DEF = pt.get<float>("parameters.R_DEF");
+    R_DEF = atof(root->first_node("R_DEF")->value());
 
     // DECISION MODEL
-    DECISION_MODEL = pt.get<string>("parameters.DECISION_MODEL");
+    DECISION_MODEL = (string) (root->first_node("DECISION_MODEL")->value());
   
     // a_00
-    a_00 = pt.get<float>("parameters.a_00");
+    a_00 = atof(root->first_node("a_00")->value());
 
     // a_01
-    a_01 = pt.get<float>("parameters.a_01");
+    a_01 = atof(root->first_node("a_01")->value());
    
     // a_10
-    a_10 = pt.get<float>("parameters.a_10");
+    a_10 = atof(root->first_node("a_10")->value());
     
     // a_11
-    a_11 = pt.get<float>("parameters.a_11");
+    a_11 = atof(root->first_node("a_11")->value());
    
     // MARKOV RATE
-    MARKOV_RATE = pt.get<float>("parameters.MARKOV_RATE");
+    MARKOV_RATE = atof(root->first_node("MARKOV_RATE")->value());
 
     // THRESHOLD
-    THRESHOLD = pt.get<int>("parameters.THRESHOLD");
+    THRESHOLD = atoi(root->first_node("THRESHOLD")->value());
   
     // COOP CONST
-    COOP_CONST = pt.get<float>("parameters.COOP_CONST");
+    COOP_CONST = atof(root->first_node("COOP_CONST")->value());
  
     // GUILT CONST
-    GUILT_CONST = pt.get<float>("parameters.GUILT_CONST");
+    GUILT_CONST = atof(root->first_node("GUILT_CONST")->value());
 
     // ISING BETA
-    ISING_BETA = pt.get<float>("parameters.ISING_BETA");
+    ISING_BETA = atof(root->first_node("ISING_BETA")->value());
 
     // ISING H
-    ISING_H = pt.get<float>("parameters.ISING_H");
+    ISING_H = atof(root->first_node("ISING_H")->value());
 
     // SEED NUMBER
-    SEED_NUMBER = pt.get<int>("parameters.SEED_NUMBER");
+    SEED_NUMBER = atoi(root->first_node("SEED_NUMBER")->value());
 }

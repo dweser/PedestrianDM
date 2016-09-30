@@ -2,7 +2,7 @@
 <parameters>
   <N>10000</N>
   <DT>.001</DT>
-  <TIME>2</TIME>
+  <TIME>.5</TIME>
   <SPATIAL>1</SPATIAL>
   <LENGTH>100</LENGTH>
   <WIDTH>100</WIDTH>

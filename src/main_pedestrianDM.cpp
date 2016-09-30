@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     // file name and number string for data writing
     string data_path = "../data/";
     string num_str = "";
+    // clear existing data
     string shell_command = "for f in " + data_path + '*' + "; do rm $f; done";
     system(shell_command.c_str());
     
