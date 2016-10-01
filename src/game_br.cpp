@@ -15,14 +15,14 @@
 #include <math.h>
 using namespace std;
 
-void game_br(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_br(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     long   N_i0 = 0;
     long   N_i1 = 0;
     double B_i0 = 0;
     double B_i1 = 0;
     
-    // parameters for /convenience
+    // parameters for convenience
     float markov_rate = parameters.MARKOV_RATE;
     float a_00 = parameters.a_00;
     float a_01 = parameters.a_01;
@@ -53,15 +53,21 @@ void game_br(double xy[][2], bool state[], int neighbors[][100], parameters &par
                 // otherwise, they don't jump
                 if (B_i1 > B_i0)
                 {
-                    state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-markov_rate*dt)))==1;
+                    state_temp[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 1;
                 }
             } else
             {
                 if (B_i0 > B_i1)
                 {
-                    state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-markov_rate*dt)))==0;
+                    state_temp[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 0;
                 }
             }
+        }
+        // commit changes
+        #pragma omp for
+        for (int i=0; i<parameters.N; i++)
+        {
+            state[i] = state_temp[i];
         }
     }
 }

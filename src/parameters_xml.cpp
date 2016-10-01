@@ -32,7 +32,7 @@ parameters::parameters(string file_path)
     DT = atof(root->first_node("DT")->value());
     
     // TIME
-    TIME = atoi(root->first_node("TIME")->value());
+    TIME = atof(root->first_node("TIME")->value());
     
     // SPATIAL
     SPATIAL = (bool) atoi(root->first_node("SPATIAL")->value());

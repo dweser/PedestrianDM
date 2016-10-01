@@ -11,6 +11,6 @@
 
 #include "parameters_xml.hpp"
 
-void game_ising(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS);
+void game_ising(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS);
 
 #endif /* game_ising_hpp */

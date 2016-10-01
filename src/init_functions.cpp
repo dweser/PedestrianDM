@@ -7,6 +7,7 @@
 //
 
 #include "init_functions.hpp"
+#include "xy_struct.hpp"
 #include <iostream>
 #include <math.h>
 #include <vector>
@@ -34,28 +35,17 @@ void meshGrid(vector< vector<int> >& array1, vector< vector<int> >& array2, vect
         {
             array1[row][col] = linspace1[col];
             array2[row][col] = linspace2[row];
-            
         }
     }
 }
 
-// array of random values
-void randomArray(double array[][2], int N)
-{
-    for (int i=0; i<N; i++)
-    {
-        array[i][0] = (double) rand()/RAND_MAX ;
-        array[i][1] = (double) rand()/RAND_MAX ;
-    }
-}
-
 // uniform random x
-void uniformXY(double xy[][2], int N, float spread, int length, int width)
+void uniformXY(XY &xy, int N, float spread, int length, int width)
 {    
     for (int i=0; i<N; i++)
     {
-        xy[i][0] = spread * length * rand()/RAND_MAX;
-        xy[i][1] = spread * width  * rand()/RAND_MAX;
+        xy.pts[i].x = spread * length * rand()/RAND_MAX;
+        xy.pts[i].y = spread * width  * rand()/RAND_MAX;
     }
 }
 
@@ -76,19 +66,6 @@ void initState(bool array[], int N, int num_def, string dec_model, string ic)
     if (ic != "block")
     {
         random_shuffle(array, array+N-1);
-    }
-}
-
-// split xy array for threading
-void splitNeighbors(int neighbors[][100], int split_neighbors[][100], int start, int end)
-{
-    int n=0;
-    for (int i=start; i<end; i++)
-    {
-        for (int col=0; col<100; col++)
-        {
-            split_neighbors[n][col] = neighbors[i][col];
-        }
     }
 }
 

@@ -7,12 +7,13 @@
 //
 
 #include "fn_file_print.hpp"
+#include "xy_struct.hpp"
 #include <string>
 #include <fstream>
 #include <sstream>
 using namespace std;
 
-void fn_file_print_xy(double xy[][2], string path, int n, string iter_string, int seed_num)
+void fn_file_print_xy(XY &xy, string path, int n, string iter_string, int seed_num)
 {
     // to write data
     ofstream outFile_x,outFile_y;
@@ -25,8 +26,8 @@ void fn_file_print_xy(double xy[][2], string path, int n, string iter_string, in
     
     for (int i=0; i<n; i++)
     {
-        outFile_x.write( (char*)&xy[i][0], sizeof(double) );
-        outFile_y.write( (char*)&xy[i][1], sizeof(double) );
+        outFile_x.write( (char*)&xy.pts[i].x, sizeof(double) );
+        outFile_y.write( (char*)&xy.pts[i].y, sizeof(double) );
     }
     outFile_x.close();
     outFile_y.close();

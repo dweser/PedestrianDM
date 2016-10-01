@@ -4,19 +4,20 @@
 
 ## objects
 OBJECTS = main_pedestrianDM.o \
+		  parameters_xml.o    \
+		  fn_neighbors.o      \
+          two_spec_iter.o     \
+          game_threshold_vm.o \
+          game_linear_vm.o    \
+          game_norm_vm.o      \
+          game_br.o           \
+          game_ising.o        \
           fn_distance.o       \
           fn_file_print.o     \
-          fn_neighbors.o      \
           fn_phi.o            \
           init_functions.o    \
-          parameters_xml.o    \
-          str_fixed_length.o  \
-          two_spec_iter.o     \
-          game_linear_vm.o    \
-          game_norm_vm.o 	  \
-          game_threshold_vm.o \
-          game_br.o           \
-          game_ising.o
+          str_fixed_length.o
+
 
 ## compiler check
 # note: after OSX version 10.8, Apple shipped Macs with clang
@@ -34,9 +35,10 @@ else
 endif
 
 ## options for the compiler CFLAGs
-# 	fopenmp  : include OpenMP
-# 	02 		 : optimize
-#	Iinclude : search for headers in folder "include"
+# 	fopenmp    : include OpenMP
+# 	02 		   : optimize
+#	Iinclude   : search for headers in folder "include"
+# 	-std=c++11 : ensure user is using c++11
 FLAGS = -fopenmp -O2 -Iinclude -std=c++11
 #LDFLAGS = -L/usr/openwin/lib
 #LDLIBS  = -lX11 -lXext

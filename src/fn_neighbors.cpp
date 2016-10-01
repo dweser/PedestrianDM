@@ -8,80 +8,46 @@
 
 #include "fn_neighbors.hpp"
 #include "fn_distance.hpp"
+#include "nanoflann.hpp"
+#include "xy_struct.hpp"
 
-#include <omp.h>
 #include <vector>
 using namespace std;
+using namespace nanoflann;
 
-void fn_neighbors(double xy[][2], bool state[], int neighbors[][100], int n, float r_coop, float r_def, const int NUM_THREADS)
+void fn_neighbors(XY &xy, bool state[], int neighbors[][100], int n, float r_coop, float r_def,
+                  KDTreeSingleIndexAdaptor<L2_Simple_Adaptor<double, XY>, XY, 2 /* dim */> &tree)
 {
-    // vector of counters for keeping track of the number of neighbors each player has
-    vector<int> count_neighbors(n);
-    int count_init = 0;
+    long num_matches;
+    double query_pt[2];
+    // vector to hold neighbors
+    std::vector<std::pair<size_t, double> > matches;
 
-    #pragma omp parallel num_threads(NUM_THREADS)
+    // default parameters for range search
+    nanoflann::SearchParams params;
+    params.sorted = true;
+
+    for (int i=0; i<n; i++)
     {
-        #pragma omp for
-        // loop through players and check all players above them to see if they're within distance r
-        for (int init=0; init<n; init++)
+        query_pt[0] = xy.pts[i].x;
+        query_pt[1] = xy.pts[i].y;
+
+        if (state[i]==1)
+            num_matches = tree.radiusSearch(&query_pt[0], r_def, matches, params);
+        else
+            num_matches = tree.radiusSearch(&query_pt[0], r_coop, matches, params);
+
+        // exclude herself
+        for (int j=1; j<num_matches; j++)
         {
-            if (state[init]==0)
-            {
-                for (int search=(init+1); search<n; search++)
-                {
-                    // since cooperative players do not always have reciprocal neighbors,
-                    // we need to check separately if players i and j are both neighbors
-                    // of each other
-                    
-                    // if within distance r_coop, then add index to temp indices
-                    if (fn_distance_lt(xy[init][0], xy[init][1], xy[search][0], xy[search][1], r_coop))
-                    {
-                        // add upper player to lower player's neighbors
-                        neighbors[init][count_init] = search;
-                        count_init++;
-                        
-                        // check search player to see if init player is also their neighbor
-                        // if they're defective, we need to check radius
-                        if (state[search]==1)
-                        {
-                            if (fn_distance_lt(xy[init][0], xy[init][1], xy[search][0], xy[search][1], r_def))
-                            {
-                                // add lower player to upper player's neighbors
-                                neighbors[search][count_neighbors[search]] = init;
-                                count_neighbors[search]++;
-                            }
-                        // if they're also cooperative, we know they're neighbors
-                        } else
-                        {
-                            // add lower player to upper player's neighbors
-                            neighbors[search][count_neighbors[search]] = init;
-                            count_neighbors[search]++;
-                        }
-                    }
-                }
-            } else
-            {
-                for (int search=(init+1); search<n; search++)
-                {
-                    // since they're defective, we know that all defective player's neighbors
-                    // are reciprocal, so we can avoid the above checks
-                    if (fn_distance_lt(xy[init][0], xy[init][1], xy[search][0], xy[search][1], r_def))
-                    {
-                        // add upper player to lower player's neighbors
-                        neighbors[init][count_init] = search;
-                        count_init++;
-                        
-                        // add lower player to upper player's neighbors
-                        neighbors[search][count_neighbors[search]] = init;
-                        count_neighbors[search]++;
-                    }
-                }
-            }
-            // update neighbors counter and clear counter
-            count_neighbors[init] = count_init;
-            count_init = 0;
+            neighbors[i][j-1] = matches[j].first;
+        }
+        for (int j=(num_matches-1); j<100; j++)
+        {
+            neighbors[i][j] = -1;
         }
     }
+    
 }
 
 // only pass one row of neighbors at a time

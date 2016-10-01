@@ -15,7 +15,7 @@ struct parameters
 {
 	int         N;
     float       DT;
-    int         TIME;
+    float       TIME;
     bool        SPATIAL;
     int         LENGTH;
     int         WIDTH;

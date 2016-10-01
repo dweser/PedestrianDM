@@ -15,7 +15,7 @@
 #include <math.h>
 using namespace std;
 
-void game_ising(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_ising(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     long   N_m1 = 0;
     long   N_p1 = 0;
@@ -43,11 +43,17 @@ void game_ising(double xy[][2], bool state[], int neighbors[][100], parameters &
             // state change
             if (state[i]==0)
             {
-                state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-rate*dt)))==1;
+                state_temp[i] = (rand()/RAND_MAX < (1 - exp(-rate*dt))) == 1;
             } else
             {
-                state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-rate*dt)))==0;
+                state_temp[i] = (rand()/RAND_MAX < (1 - exp(-rate*dt))) == 0;
             }
+        }
+        // commit changes
+        #pragma omp for
+        for (int i=0; i<parameters.N; i++)
+        {
+            state[i] = state_temp[i];
         }
     }
 }

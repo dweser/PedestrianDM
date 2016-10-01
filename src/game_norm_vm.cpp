@@ -15,16 +15,16 @@
 #include <math.h>
 using namespace std;
 
-void game_norm_vm(double xy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_norm_vm(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
-    long   N_i0 = 0;
-    long   N_i1 = 0;
-    double B_i0 = 0;
-    double B_i1 = 0;
-    double temp_B0 = 0;
-    double temp_B1 = 0;
+    int   N_i0 = 0;
+    int   N_i1 = 0;
+    float B_i0 = 0;
+    float B_i1 = 0;
+    float temp_B0 = 0;
+    float temp_B1 = 0;
     
-    // parameters for /convenience
+    // parameters for convenience
     float markov_rate = parameters.MARKOV_RATE;
     float a_00 = parameters.a_00;
     float a_01 = parameters.a_01;
@@ -53,11 +53,17 @@ void game_norm_vm(double xy[][2], bool state[], int neighbors[][100], parameters
             // state change
             if (state[i]==0)
             {
-                state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-B_i1*dt)))==1;
+                state_temp[i] = (rand()/RAND_MAX < (1 - exp(-B_i1*dt))) == 1;
             } else
             {
-                state[i] = (bool) (rand()/RAND_MAX < (1 - exp(-B_i0*dt)))==0;
+                state_temp[i] = (rand()/RAND_MAX < (1 - exp(-B_i0*dt))) == 0;
             }
+        }
+        // commit changes
+        #pragma omp for
+        for (int i=0; i<parameters.N; i++)
+        {
+            state[i] = state_temp[i];
         }
     }
 }
