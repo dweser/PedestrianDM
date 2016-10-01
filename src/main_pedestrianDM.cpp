@@ -56,15 +56,15 @@ int main(int argc, char *argv[])
 
     // main structures
     XY      xy;
+    xy.pts.resize(N);
     bool    state[N];
     int     neighbors[N][100];
-    xy.pts.resize(N);
 
     // array to hold state changes before committing them
     bool    state_temp[N];
     
-    // construct a kd-tree index for neighbors searches
-    typedef KDTreeSingleIndexAdaptor<L2_Simple_Adaptor<double, XY>, XY, 2 /* dim */> kdtree;
+    // construct a k-d tree index for neighbors searches
+    typedef KDTreeSingleIndexAdaptor<L2_Simple_Adaptor<double, XY>, XY, 2 /* dim */> tree;
 
     // seed random number generator
     srand(parameters.SEED_NUMBER);
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
         fn_file_print_xy(xy, data_path, N, num_str, parameters.SEED_NUMBER);
         fn_file_print_state(state, data_path, N, num_str, parameters.SEED_NUMBER);
 
-        kdtree   index(2 /*dim*/, xy, KDTreeSingleIndexAdaptorParams(10 /* max leaf */) );
+        tree   index(2 /*dim*/, xy, KDTreeSingleIndexAdaptorParams(10 /* max leaf */) );
         index.buildIndex();
 
         // find neighbors
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
             game_norm_vm(state, state_temp, neighbors, parameters, NUM_THREADS);
         } else if (parameters.DECISION_MODEL == "threshold vm")
         {
-        game_threshold_vm(state, state_temp, neighbors, parameters, NUM_THREADS);
+            game_threshold_vm(state, state_temp, neighbors, parameters, NUM_THREADS);
         } else if (parameters.DECISION_MODEL == "br")
         {
             game_br(state, state_temp, neighbors, parameters, NUM_THREADS);
