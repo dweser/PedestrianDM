@@ -20,8 +20,6 @@
 #include "game_ising.hpp"
 #include "nanoflann.hpp"
 
-#include <iostream>
-
 #include <stdlib.h>
 #include <cstdlib>
 #include <cstdio>
@@ -110,7 +108,7 @@ int main(int argc, char *argv[])
         fn_file_print_xy(xy, data_path, N, num_str, parameters.SEED_NUMBER);
         fn_file_print_state(state, data_path, N, num_str, parameters.SEED_NUMBER);
 
-        tree   index(2 /*dim*/, xy, KDTreeSingleIndexAdaptorParams(10 /* max leaf */) );
+        tree   index(2 /*dim*/, xy, KDTreeSingleIndexAdaptorParams(200 /* max leaf */) );
         index.buildIndex();
 
         // find neighbors

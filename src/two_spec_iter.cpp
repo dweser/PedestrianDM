@@ -21,6 +21,7 @@ void two_spec_iter(XY &xy, bool state[], int neighbors[][100], parameters &param
     // new coordinates
     if (parameters.SPATIAL)
     {
+        double  dxdy[parameters.N][2];
         double  desired[2] = {0,0};
         double  distance = 0;
         double  dt = (double) parameters.DT;
@@ -33,8 +34,8 @@ void two_spec_iter(XY &xy, bool state[], int neighbors[][100], parameters &param
             #pragma omp for
             for (int i=0; i<parameters.N; i++)
             {
-                xy.pts[i].x += dt * desired[0];
-                xy.pts[i].y += dt * desired[1];
+                dxdy[i][0] = dt * desired[0];
+                dxdy[i][1] = dt * desired[1];
                 
                 // summation for defective with phi_1
                 if (state[i])
@@ -49,8 +50,8 @@ void two_spec_iter(XY &xy, bool state[], int neighbors[][100], parameters &param
                         distance = fn_distance(xy.pts[i].x, xy.pts[i].y, xy.pts[nb_j].x, xy.pts[nb_j].y);
                         
                         // desired + phi_1(d(x_j,x_i))*(x_j-x_i)/d(x_j,x_i)
-                        xy.pts[i].x += dt * fn_phi1(distance, parameters.R_DEF) * (xy.pts[i].x - xy.pts[nb_j].x)/distance;
-                        xy.pts[i].y += dt * fn_phi1(distance, parameters.R_DEF) * (xy.pts[i].y - xy.pts[nb_j].y)/distance;
+                        dxdy[i][0] += dt * fn_phi1(distance, parameters.R_DEF) * (xy.pts[i].x - xy.pts[nb_j].x)/distance;
+                        dxdy[i][1] += dt * fn_phi1(distance, parameters.R_DEF) * (xy.pts[i].y - xy.pts[nb_j].y)/distance;
                     }
                 } else
                 // summation for cooperative with phi_0
@@ -66,10 +67,16 @@ void two_spec_iter(XY &xy, bool state[], int neighbors[][100], parameters &param
                         distance = fn_distance(xy.pts[i].x, xy.pts[i].y, xy.pts[nb_j].x, xy.pts[nb_j].y);
                         
                         // desired + phi_0(d(x_j,x_i))*(x_j-x_i)/d(x_j,x_i)
-                        xy.pts[i].x += dt * fn_phi0(distance, parameters.R_DEF) * (xy.pts[i].x - xy.pts[nb_j].x)/distance;
-                        xy.pts[i].y += dt * fn_phi0(distance, parameters.R_DEF) * (xy.pts[i].y - xy.pts[nb_j].y)/distance;
+                        dxdy[i][0] += dt * fn_phi0(distance, parameters.R_DEF) * (xy.pts[i].x - xy.pts[nb_j].x)/distance;
+                        dxdy[i][1] += dt * fn_phi0(distance, parameters.R_DEF) * (xy.pts[i].y - xy.pts[nb_j].y)/distance;
                     }
                 }
+            }
+            #pragma omp for 
+            for (int i = 0; i<parameters.N; ++i)
+            {
+                xy.pts[i].x += dxdy[i][0];
+                xy.pts[i].y += dxdy[i][1];
             }
         }
     }
