@@ -16,12 +16,11 @@
 #include <omp.h>
 using namespace std;
 
-void two_spec_iter(XY &xy, bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void two_spec_iter(XY &xy, double dxdy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     // new coordinates
     if (parameters.SPATIAL)
     {
-        double  dxdy[parameters.N][2];
         double  desired[2] = {0,0};
         double  distance = 0;
         double  dt = (double) parameters.DT;
@@ -56,7 +55,6 @@ void two_spec_iter(XY &xy, bool state[], int neighbors[][100], parameters &param
                 } else
                 // summation for cooperative with phi_0
                 {
-                    
                     // count neighbors
                     num_neighbs = fn_count_neighbors(neighbors[i]);
                     
@@ -72,8 +70,9 @@ void two_spec_iter(XY &xy, bool state[], int neighbors[][100], parameters &param
                     }
                 }
             }
-            #pragma omp for 
-            for (int i = 0; i<parameters.N; ++i)
+            // commit changes
+            #pragma omp for
+            for (int i=0; i<parameters.N; i++)
             {
                 xy.pts[i].x += dxdy[i][0];
                 xy.pts[i].y += dxdy[i][1];

@@ -12,6 +12,6 @@
 #include "parameters_xml.hpp"
 #include "xy_struct.hpp"
 
-void two_spec_iter(XY &xy, bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS);
+void two_spec_iter(XY &xy, double dxdy[][2], bool state[], int neighbors[][100], parameters &parameters, const int NUM_THREADS);
 
 #endif /* two_spec_iter_hpp */

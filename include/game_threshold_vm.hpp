@@ -11,6 +11,6 @@
 
 #include "parameters_xml.hpp"
 
-void game_threshold_vm(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS);
+void game_threshold_vm(bool state[], bool state_old[], int neighbors[][100], parameters &parameters, const int NUM_THREADS);
 
 #endif /* game_threshold_vm_hpp */

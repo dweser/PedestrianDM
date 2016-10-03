@@ -15,7 +15,7 @@
 #include <math.h>
 using namespace std;
 
-void game_norm_vm(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_norm_vm(bool state[], bool state_old[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     int   N_i0 = 0;
     int   N_i1 = 0;
@@ -41,8 +41,8 @@ void game_norm_vm(bool state[], bool state_temp[], int neighbors[][100], paramet
         for (int i=0; i<parameters.N; i++)
         {
             // number of neighbors
-            N_i0 = fn_count_states(neighbors[i], state, 0);
-            N_i1 = fn_count_states(neighbors[i], state, 1);
+            N_i0 = fn_count_states(neighbors[i], state_old, 0);
+            N_i1 = fn_count_states(neighbors[i], state_old, 1);
 
             // payoffs
             temp_B0 = a_00*N_i0 + a_01*N_i1 + coop_const;
@@ -53,17 +53,11 @@ void game_norm_vm(bool state[], bool state_temp[], int neighbors[][100], paramet
             // state change
             if (state[i]==0)
             {
-                state_temp[i] = (rand()/RAND_MAX < (1 - exp(-B_i1*dt))) == 1;
+                state[i] = (rand()/RAND_MAX < (1 - exp(-B_i1*dt))) == 1;
             } else
             {
-                state_temp[i] = (rand()/RAND_MAX < (1 - exp(-B_i0*dt))) == 0;
+                state[i] = (rand()/RAND_MAX < (1 - exp(-B_i0*dt))) == 0;
             }
-        }
-        // commit changes
-        #pragma omp for
-        for (int i=0; i<parameters.N; i++)
-        {
-            state[i] = state_temp[i];
         }
     }
 }

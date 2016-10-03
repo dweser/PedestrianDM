@@ -15,7 +15,7 @@
 #include <math.h>
 using namespace std;
 
-void game_br(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_br(bool state[], bool state_old[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     long   N_i0 = 0;
     long   N_i1 = 0;
@@ -39,8 +39,8 @@ void game_br(bool state[], bool state_temp[], int neighbors[][100], parameters &
         for (int i=0; i<parameters.N; i++)
         {
             // number of neighbors
-            N_i0 = fn_count_states(neighbors[i], state, 0);
-            N_i1 = fn_count_states(neighbors[i], state, 1);
+            N_i0 = fn_count_states(neighbors[i], state_old, 0);
+            N_i1 = fn_count_states(neighbors[i], state_old, 1);
 
             // payoffs
             B_i0 = a_00*N_i0 + a_01*N_i1 + coop_const;
@@ -53,21 +53,15 @@ void game_br(bool state[], bool state_temp[], int neighbors[][100], parameters &
                 // otherwise, they don't jump
                 if (B_i1 > B_i0)
                 {
-                    state_temp[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 1;
+                    state[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 1;
                 }
             } else
             {
                 if (B_i0 > B_i1)
                 {
-                    state_temp[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 0;
+                    state[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 0;
                 }
             }
-        }
-        // commit changes
-        #pragma omp for
-        for (int i=0; i<parameters.N; i++)
-        {
-            state[i] = state_temp[i];
         }
     }
 }

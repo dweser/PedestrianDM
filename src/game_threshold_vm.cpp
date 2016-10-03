@@ -15,7 +15,7 @@
 #include <math.h>
 using namespace std;
 
-void game_threshold_vm(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_threshold_vm(bool state[], bool state_old[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     int   N_i0 = 0;
     int   N_i1 = 0;
@@ -32,8 +32,8 @@ void game_threshold_vm(bool state[], bool state_temp[], int neighbors[][100], pa
         for (int i=0; i<parameters.N; i++)
         {
             // number of neighbors
-            N_i0 = fn_count_states(neighbors[i], state, 0);
-            N_i1 = fn_count_states(neighbors[i], state, 1);
+            N_i0 = fn_count_states(neighbors[i], state_old, 0);
+            N_i1 = fn_count_states(neighbors[i], state_old, 1);
             
             // state change
             if (state[i]==0)
@@ -42,27 +42,21 @@ void game_threshold_vm(bool state[], bool state_temp[], int neighbors[][100], pa
                 // otherwise, they don't jump
                 if (N_i1 >= threshold)
                 {
-                    state_temp[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 1;
+                    state[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 1;
                 } else
                 {
-                    state_temp[i] = state[i];
+                    state[i] = state[i];
                 }
             } else
             {
                 if (N_i0 >= threshold)
                 {
-                    state_temp[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 0;
+                    state[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 0;
                 } else
                 {
-                    state_temp[i] = state[i];
+                    state[i] = state[i];
                 }
             }
-        }
-        // commit changes
-        #pragma omp for
-        for (int i=0; i<parameters.N; i++)
-        {
-            state[i] = state_temp[i];
         }
     }
 }

@@ -15,7 +15,7 @@
 #include <math.h>
 using namespace std;
 
-void game_ising(bool state[], bool state_temp[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
+void game_ising(bool state[], bool state_old[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
     long   N_m1 = 0;
     long   N_p1 = 0;
@@ -34,8 +34,8 @@ void game_ising(bool state[], bool state_temp[], int neighbors[][100], parameter
         for (int i=0; i<parameters.N; i++)
         {
             // number of neighbors
-            N_m1 = fn_count_states(neighbors[i], state, 0);
-            N_p1 = fn_count_states(neighbors[i], state, 1);
+            N_m1 = fn_count_states(neighbors[i], state_old, 0);
+            N_p1 = fn_count_states(neighbors[i], state_old, 1);
 
             summation = (-1)*N_m1 + (1)*N_p1 + (N_m1+N_p1)*ising_h;
             rate = exp(-ising_beta*state[i]*summation);
@@ -43,17 +43,11 @@ void game_ising(bool state[], bool state_temp[], int neighbors[][100], parameter
             // state change
             if (state[i]==0)
             {
-                state_temp[i] = (rand()/RAND_MAX < (1 - exp(-rate*dt))) == 1;
+                state[i] = (rand()/RAND_MAX < (1 - exp(-rate*dt))) == 1;
             } else
             {
-                state_temp[i] = (rand()/RAND_MAX < (1 - exp(-rate*dt))) == 0;
+                state[i] = (rand()/RAND_MAX < (1 - exp(-rate*dt))) == 0;
             }
-        }
-        // commit changes
-        #pragma omp for
-        for (int i=0; i<parameters.N; i++)
-        {
-            state[i] = state_temp[i];
         }
     }
 }
