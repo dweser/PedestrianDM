@@ -102,6 +102,13 @@ int main(int argc, char *argv[])
         uniformXY(xy, N, parameters.SPREAD, parameters.LENGTH, parameters.WIDTH);
     }
 
+    // initiate xy
+    for (int i=0; i<N; i++)
+    {
+        xy.pts[i].x = xy_old.pts[i].x;
+        xy.pts[i].y = xy_old.pts[i].y;
+    }
+
     // generate states
     initState(state_old, N, NUM_DEFECT_INIT, parameters.DECISION_MODEL, parameters.IC);
 
