@@ -30,6 +30,7 @@
 #include <string>
 #include <cstring>
 #include <utility>
+#include <unistd.h>
 
 using namespace std;
 using namespace nanoflann;
@@ -45,8 +46,10 @@ int main(int argc, char *argv[])
     string data_path = "../data/";
     string num_str = "";
     // clear existing data
-    string shell_command = "for f in " + data_path + '*' + "; do rm $f; done";
+    chdir(data_path.c_str());
+    string shell_command = "perl -e 'for(<*>){((stat)[9]<(unlink))}'";
     system(shell_command.c_str());
+    chdir("../bin/");
 
     // values calculated based on parameters
     const int     NUM_DEFECT_INIT = round(N/2);
@@ -62,10 +65,6 @@ int main(int argc, char *argv[])
     // arrays to hold old states and changes in xy-coordinates
     bool    state_old[N];
     double  dxdy[N][2];
-
-    // pointers to states to swap
-    bool    *state_ptr = state;
-    bool    *state_old_ptr = state_old;
     
     // construct a k-d tree index for neighbors searches
     typedef KDTreeSingleIndexAdaptor<L2_Simple_Adaptor<double, XY>, XY, 2 /* dim */> tree;
@@ -100,13 +99,6 @@ int main(int argc, char *argv[])
     } else
     {
         uniformXY(xy, N, parameters.SPREAD, parameters.LENGTH, parameters.WIDTH);
-    }
-
-    // initiate xy
-    for (int i=0; i<N; i++)
-    {
-        xy.pts[i].x = xy_old.pts[i].x;
-        xy.pts[i].y = xy_old.pts[i].y;
     }
 
     // generate states
@@ -149,8 +141,8 @@ int main(int argc, char *argv[])
         // new xy-coordinates
         two_spec_iter(xy, dxdy, state, neighbors, parameters, NUM_THREADS);
 
-        // swap states
-        swap(state_ptr, state_old_ptr);
+        // update states for next iteration
+        memcpy(state_old, state, sizeof(state_old));
     }
     
     end = chrono::system_clock::now();

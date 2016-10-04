@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <parameters>
   <N>10000</N>
-  <DT>.001</DT>
-  <TIME>2</TIME>
+  <DT>.01</DT>
+  <TIME>1</TIME>
   <SPATIAL>1</SPATIAL>
   <LENGTH>100</LENGTH>
   <WIDTH>100</WIDTH>
