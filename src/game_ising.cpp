@@ -41,12 +41,12 @@ void game_ising(bool state[], bool state_old[], int neighbors[][100], parameters
             rate = exp(-ising_beta*state[i]*summation);
 
             // state change
-            if (state[i]==0)
+            if (state_old[i]==0)
             {
-                state[i] = (rand()/RAND_MAX < (1 - exp(-rate*dt))) == 1;
+                state[i] = (double(rand())/double(RAND_MAX) < (1 - exp(-rate*dt))) == 1;
             } else
             {
-                state[i] = (rand()/RAND_MAX < (1 - exp(-rate*dt))) == 0;
+                state[i] = (double(rand())/double(RAND_MAX) < (1 - exp(-rate*dt))) == 0;
             }
         }
     }

@@ -36,13 +36,13 @@ void game_threshold_vm(bool state[], bool state_old[], int neighbors[][100], par
             N_i1 = fn_count_states(neighbors[i], state_old, 1);
             
             // state change
-            if (state[i]==0)
+            if (state_old[i]==0)
             {
                 // if N1>=threshold, they jump with rate 1 scaled by the "markov rate" and "dt"
                 // otherwise, they don't jump
                 if (N_i1 >= threshold)
                 {
-                    state[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 1;
+                    state[i] = (double(rand())/double(RAND_MAX) < (1 - exp(-markov_rate*dt))) == 1;
                 } else
                 {
                     state[i] = state[i];
@@ -51,7 +51,7 @@ void game_threshold_vm(bool state[], bool state_old[], int neighbors[][100], par
             {
                 if (N_i0 >= threshold)
                 {
-                    state[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 0;
+                    state[i] = (double(rand())/double(RAND_MAX) < (1 - exp(-markov_rate*dt))) == 0;
                 } else
                 {
                     state[i] = state[i];

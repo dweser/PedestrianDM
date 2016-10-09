@@ -47,19 +47,19 @@ void game_br(bool state[], bool state_old[], int neighbors[][100], parameters &p
             B_i1 = a_10*N_i0 + a_11*N_i1 + guilt_const;
             
             // state change
-            if (state[i]==0)
+            if (state_old[i]==0)
             {
                 // if B1>B0, they jump with rate 1 scaled by the "markov rate" and "dt"
                 // otherwise, they don't jump
                 if (B_i1 > B_i0)
                 {
-                    state[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 1;
+                    state[i] = (double(rand())/double(RAND_MAX) < (1 - exp(-markov_rate*dt))) == 1;
                 }
             } else
             {
                 if (B_i0 > B_i1)
                 {
-                    state[i] = (rand()/RAND_MAX < (1 - exp(-markov_rate*dt))) == 0;
+                    state[i] = (double(rand())/double(RAND_MAX) < (1 - exp(-markov_rate*dt))) == 0;
                 }
             }
         }

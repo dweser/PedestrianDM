@@ -44,7 +44,7 @@ parameters::parameters(string file_path)
     WIDTH = atoi(root->first_node("WIDTH")->value());
     
     // IC
-    WIDTH = atoi(root->first_node("WIDTH")->value());
+    IC = root->first_node("IC")->value();
     
     // SPREAD
     SPREAD = atof(root->first_node("SPREAD")->value());

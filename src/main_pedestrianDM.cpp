@@ -47,8 +47,7 @@ int main(int argc, char *argv[])
     string num_str = "";
     // clear existing data
     chdir(data_path.c_str());
-    string shell_command = "perl -e 'for(<*>){((stat)[9]<(unlink))}'";
-    system(shell_command.c_str());
+    system("perl -e 'for(<*>){((stat)[9]<(unlink))}'");
     chdir("../bin/");
 
     // values calculated based on parameters

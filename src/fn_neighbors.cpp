@@ -12,6 +12,7 @@
 #include "xy_struct.hpp"
 
 #include <vector>
+#include <cmath>
 using namespace std;
 using namespace nanoflann;
 
@@ -25,7 +26,6 @@ void fn_neighbors(XY &xy, bool state[], int neighbors[][100], int n, float r_coo
 
     // default parameters for range search
     nanoflann::SearchParams params;
-    params.sorted = true;
 
     for (int i=0; i<n; i++)
     {
@@ -33,9 +33,9 @@ void fn_neighbors(XY &xy, bool state[], int neighbors[][100], int n, float r_coo
         query_pt[1] = xy.pts[i].y;
 
         if (state[i]==1)
-            num_matches = tree.radiusSearch(&query_pt[0], r_def, matches, params);
+            num_matches = tree.radiusSearch(&query_pt[0], sqrt(r_def), matches, params);
         else
-            num_matches = tree.radiusSearch(&query_pt[0], r_coop, matches, params);
+            num_matches = tree.radiusSearch(&query_pt[0], sqrt(r_coop), matches, params);
 
         // exclude herself
         for (int j=1; j<num_matches; j++)

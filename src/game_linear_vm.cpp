@@ -10,15 +10,17 @@
 #include "parameters_xml.hpp"
 #include "fn_neighbors.hpp"
 
+#include <iostream>
+
 #include <cstdlib>
 #include <omp.h>
-#include <math.h>
+#include <cmath>
 using namespace std;
 
 void game_linear_vm(bool state[], bool state_old[], int neighbors[][100], parameters &parameters, const int NUM_THREADS)
 {
-    long   N_i0 = 0;
-    long   N_i1 = 0;
+    int    N_i0 = 0;
+    int    N_i1 = 0;
     double B_i0 = 0;
     double B_i1 = 0;
     
@@ -32,7 +34,6 @@ void game_linear_vm(bool state[], bool state_old[], int neighbors[][100], parame
     float guilt_const = parameters.GUILT_CONST;
     float dt = parameters.DT;
 
-    // loop
     #pragma omp parallel num_threads(NUM_THREADS)
     {
         #pragma omp for
@@ -45,14 +46,14 @@ void game_linear_vm(bool state[], bool state_old[], int neighbors[][100], parame
             // payoffs
             B_i0 = markov_rate * (a_00*N_i0 + a_01*N_i1 + coop_const);
             B_i1 = markov_rate * (a_10*N_i0 + a_11*N_i1 - guilt_const);
-            
+
             // state change
-            if (state[i]==0)
+            if (state_old[i]==0)
             {
-                state[i] = (rand()/RAND_MAX < (1 - exp(-B_i1*dt))) == 1;
+                state[i] = (double(rand())/double(RAND_MAX) < (1 - exp(-B_i1*dt))) == 1;
             } else
             {
-                state[i] = (rand()/RAND_MAX < (1 - exp(-B_i0*dt))) == 0;
+                state[i] = (double(rand())/double(RAND_MAX) < (1 - exp(-B_i0*dt))) == 0;
             }
         }
     }
