@@ -4,7 +4,8 @@
 
 from   pyevtk.hl import pointsToVTK
 import numpy as np
-import os
+import os 
+import os.path
 import time
 import xml.etree.ElementTree as ET
 import subprocess
@@ -148,11 +149,21 @@ def plotData(parameters, jump_print, data_conv):
 
 # main execution
 if __name__ == "__main__":
+	# check if cpp code is compiled
+	if (not os.path.isfile(".comp")):
+		process_make  = subprocess.Popen("make", stdout=subprocess.PIPE)
+		output, error = process_make.communicate()
+		# check for compilation errors
+		if (error is not None):
+			print "Compilation failed. Error: ", error
+		# make empty .comp file
+		open(".comp", 'a').close()
+
 	# execute pedestrianDM cpp code
 	tic = time.time()
 	os.chdir('bin')
 	process_pedestriancpp = subprocess.Popen("./pedestrianDM", stdout=subprocess.PIPE)
-	output, error = process_pedestriancpp.communicate()
+	output, error         = process_pedestriancpp.communicate()
 	os.chdir('..')
 	toc = time.time() - tic
 
