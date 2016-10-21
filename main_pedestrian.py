@@ -34,9 +34,8 @@ def loadBinary(file_name):
 	return array
 
 def loadBinaryInt(file_name):
-	# load module within function to avoid installation issues
 	import numpy as np
-	
+
 	file  = open(file_name, "rb") 
 	file.seek(0, os.SEEK_SET)
 	array = np.fromfile(file, dtype=np.bool_)
@@ -45,7 +44,6 @@ def loadBinaryInt(file_name):
 
 # convert data from binary to vtk format
 def convertData(parameters, jump_print, data_keep):
-	# load modules within function to avoid installation issues
 	import numpy as np
 	from pyevtk.hl import pointsToVTK
 	
@@ -94,13 +92,11 @@ def loadParameters():
 
 # plot data
 def animateData(parameters, jump_print, data_conv):
-	# load module within function to avoid installation issues
 	import matplotlib.pyplot     as plt
 	from   matplotlib.animation  import FuncAnimation
 
 	# define our update function for FuncAnimation
 	def update_scatter_plot(frame_number):
-		# load module within function to avoid installation issues
 		import numpy as np
 		
 		extension = seed_name + "_" + str(frame_number*jump_print).zfill(9) + ext
