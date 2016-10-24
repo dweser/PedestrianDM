@@ -23,7 +23,7 @@ def runSimulation():
 	return error
 
 # functions to load binary
-def loadBinary(file_name):
+def loadBinaryDouble(file_name):
 	# load module within function to avoid installation issues
 	import numpy as np
 
@@ -33,7 +33,7 @@ def loadBinary(file_name):
 	file.close()
 	return array
 
-def loadBinaryInt(file_name):
+def loadBinaryBool(file_name):
 	import numpy as np
 
 	file  = open(file_name, "rb") 
@@ -69,10 +69,10 @@ def convertData(parameters, jump_print, data_keep):
 	for k in xrange(0, parameters['nTime']-1, jump_print):
 		extension = seed_name + "_" + str(k).zfill(9) + ext
 		# load data
-		x         = loadBinary(   path_data + "particleX_" + extension)[0:N]
-		y         = loadBinary(   path_data + "particleY_" + extension)[0:N]   
+		x         = loadBinaryDouble(path_data + "particleX_" + extension)[0:N]
+		y         = loadBinaryDouble(path_data + "particleY_" + extension)[0:N]   
 		# multiply by 1 to implicitly cast bool array as int
-		s         = loadBinaryInt(path_data + "particleS_" + extension)[0:N]*1
+		s         = loadBinaryBool(  path_data + "particleS_" + extension)[0:N]*1
 	
 		# write data as VTK
 		pointsToVTK(path_vtk + "particles_" + str(k).zfill(9), x, y, z, data = {"Coop_def" : s})
@@ -101,13 +101,15 @@ def animateData(parameters, jump_print, data_conv):
 		
 		extension = seed_name + "_" + str(frame_number*jump_print).zfill(9) + ext
 		# load data
-		x         = loadBinary(   path_data + "particleX_" + extension)[0:N]
-		y         = loadBinary(   path_data + "particleY_" + extension)[0:N]   
-		# multiply by 1 to implicitly cast bool array as int
-		s         = loadBinaryInt(path_data + "particleS_" + extension)[0:N]*1
+		x         = loadBinaryDouble(path_data + "particleX_" + extension)[0:N]
+		y         = loadBinaryDouble(path_data + "particleY_" + extension)[0:N]   
+		s         = loadBinaryBool(  path_data + "particleS_" + extension)[0:N]*1
 
+		# update positions
 		plt_sct.set_offsets(np.transpose(np.vstack([x, y])))
+		# update title
 		title.set_text('Time t=' + '{:04.2f}'.format(frame_number*jump_print*dt))
+		# update states (color of particles)
 		plt_sct.set_array(s)
 
     # parameters
@@ -122,15 +124,14 @@ def animateData(parameters, jump_print, data_conv):
 	## initialization of plot ##
 	extension = seed_name + "_" + str(0).zfill(9) + ext
 	# load initial data
-	x         = loadBinary(   path_data + "particleX_" + extension)[0:N]
-	y         = loadBinary(   path_data + "particleY_" + extension)[0:N]   
-	# multiply by 1 to implicitly cast bool array as int
-	s         = loadBinaryInt(path_data + "particleS_" + extension)[0:N]*1
+	x         = loadBinaryDouble(path_data + "particleX_" + extension)[0:N]
+	y         = loadBinaryDouble(path_data + "particleY_" + extension)[0:N]   
+	s         = loadBinaryBool(  path_data + "particleS_" + extension)[0:N]*1
 
 	# initial figure
 	fig 	= plt.figure()
 	ax 		= plt.gca()
-	plt_sct = plt.scatter(x, y, s=100, alpha=0.6, c=s, vmin=0, vmax=1)
+	plt_sct = plt.scatter(x, y, s=50, alpha=0.6, c=s, vmin=0, vmax=1)
 	title 	= plt.title('Time t=' + '{:04.2f}'.format(0), horizontalalignment='center', fontsize=20)
 	plt.axis([-parameters['length'], 2*parameters['length'], -parameters['width'], 2*parameters['width']])
 	plt.axes().set_aspect('equal', 'box')
@@ -229,7 +230,7 @@ if __name__ == "__main__":
 	# clear directory of binary data
 	if (data_keep == 0):
 		print "Deleting binary data..."
-		os.chdir(path_data)
+		os.chdir('data')
 		os.system("perl -e 'for(<*>){((stat)[9]<(unlink))}'")
 		os.chdir('..')
 		print "Binary data deletion complete."
