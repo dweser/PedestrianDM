@@ -115,7 +115,6 @@ def animateData(parameters, jump_print, data_conv):
     # parameters
 	cwd       = os.getcwd()
 	path_data = cwd + "/data/"
-	path_vtk  = cwd + "/visualization/dataVTK/"
 	seed_name = "Seed" + parameters['seed']
 	N         = parameters['N']
 	dt 		  = parameters['dt']
@@ -139,7 +138,7 @@ def animateData(parameters, jump_print, data_conv):
 	plt.ylabel(r'$y$', fontsize=25)
 
 	# create animation and display it
-	animation = FuncAnimation(fig, update_scatter_plot, frames=parameters['nTime']/jump_print, interval=1)
+	animation = FuncAnimation(fig, update_scatter_plot, frames=parameters['nTime']/jump_print, interval=24)
 	plt.show()
 
 
