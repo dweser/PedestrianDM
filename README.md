@@ -26,23 +26,23 @@ To execute the program, run the Python script in the main folder `PedestrianDM`:
 
 The arguments of the Python script are as follows:
 * `arg1` :  whether to run the simulation
- — Valid values: 0, 1
- — Default value: 1
+ *— Valid values: 0, 1
+ *— Default value: 1
 * `arg2` :  whether to convert the binary data in the folder `data` to VTK format and store in the folder `visualization/dataVTK`
- — Valid values: 0, 1
- — Default value: 0
+ *— Valid values: 0, 1
+ *— Default value: 0
 * `arg3` :  whether to plot the data in the folder `data` natively in Python
- — Valid values: 0, 1
- — Default value: 1
+ *— Valid values: 0, 1
+ *— Default value: 1
 * `arg4` : whether to analyze and plot the densities over time
- — Valid values: 0, 1
- — Default value: 1
+ *— Valid values: 0, 1
+ *— Default value: 1
 * `arg5` :  how many periods of data to systematically skip in conversion or plotting
- — Valid values: any positive integer
- — Default value: 1
+ *— Valid values: any positive integer
+ *— Default value: 1
 * `arg6` :  whether to keep the binary data in the folder `data` after execution of the script
- — Valid values: 0, 1
- — Default value: 1
+ *— Valid values: 0, 1
+ *— Default value: 1
 
 First, if `arg1=1`, then the program checks if the C++ source code has been compiled. 
 If not, it compiles the code for the user. Then, it executes the C++ executable `pedestrianDM` located in `bin`.
