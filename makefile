@@ -3,19 +3,15 @@
 #########################
 
 ## objects
-OBJECTS = main_pedestrianDM.o \
-		  parameters_xml.o    \
-		  fn_neighbors.o      \
-          two_spec_iter.o     \
-          game_threshold_vm.o \
-          game_linear_vm.o    \
-          game_norm_vm.o      \
-          game_br.o           \
-          game_ising.o        \
-          fn_distance.o       \
-          fn_file_print.o     \
-          fn_phi.o            \
-          init_functions.o    \
+OBJECTS = main_pedestrianDM.o   \
+		  parameters_xml.o      \
+		  fn_neighbors.o        \
+          two_spec_iter.o       \
+          decision_strategies.o \
+          fn_distance.o         \
+          fn_file_print.o       \
+          fn_phi.o              \
+          init_functions.o      \
           str_fixed_length.o
 
 

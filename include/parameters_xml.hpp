@@ -23,11 +23,13 @@ struct parameters
     float       SPREAD;
     float       R_COOP;
     float       R_DEF;
+    float       L;
     std::string DECISION_MODEL;
     float       a_00;
     float       a_01;
     float       a_10;
     float       a_11;
+    float       GAMMA;
     float       MARKOV_RATE;
     int         THRESHOLD;
     float       COOP_CONST;

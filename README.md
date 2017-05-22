@@ -21,25 +21,28 @@ The user must ensure the following Python packages are installed:
 
 To execute the program, run the Python script in the main folder `PedestrianDM`:
 ```bash
-	> python main_pedestrian.py arg1 arg2 arg3 arg4 arg5
+	> python main_pedestrian.py arg1 arg2 arg3 arg4 arg5 arg6
 ```
 
 The arguments of the Python script are as follows:
 * `arg1` :  whether to run the simulation
- * Valid values: 0, 1
- * Default value: 1
+ — Valid values: 0, 1
+ — Default value: 1
 * `arg2` :  whether to convert the binary data in the folder `data` to VTK format and store in the folder `visualization/dataVTK`
- * Valid values: 0, 1
- * Default value: 0
+ — Valid values: 0, 1
+ — Default value: 0
 * `arg3` :  whether to plot the data in the folder `data` natively in Python
- * Valid values: 0, 1
- * Default value: 1
-* `arg4` :  how many periods of data to systematically skip in conversion or plotting
- * Valid values: any positive integer
- * Default value: 1
-* `arg5` :  whether to keep the binary data in the folder `data` after execution of the script
- * Valid values: 0, 1
- * Default value: 1
+ — Valid values: 0, 1
+ — Default value: 1
+* `arg4` : whether to analyze and plot the densities over time
+ — Valid values: 0, 1
+ — Default value: 1
+* `arg5` :  how many periods of data to systematically skip in conversion or plotting
+ — Valid values: any positive integer
+ — Default value: 1
+* `arg6` :  whether to keep the binary data in the folder `data` after execution of the script
+ — Valid values: 0, 1
+ — Default value: 1
 
 First, if `arg1=1`, then the program checks if the C++ source code has been compiled. 
 If not, it compiles the code for the user. Then, it executes the C++ executable `pedestrianDM` located in `bin`.
@@ -50,10 +53,13 @@ nothing will be output to the terminal.
 
 Second, if `arg2=1`, then the program converts the binary data as indicated above, ommiting every `arg4` data files.
 
-Third, if `arg3=1`, then the program plots the data natively in Python, ommiting every `arg4` data files. 
+Third, if `arg3=1`, then the program plots the data natively in Python, ommiting every `arg5` data files. 
 The data is plot as an animation, so the user must close the resulting window to stop the animation.
 
-Finally, if `arg5=1`, then the program deletes the binary data in the folder `data`.
+Fourth, if `arg4=1`, then the program plots the densities and differences between densities natively in Python, ommiting every `arg5` data files. 
+The data is plot as an animation, so the user must close the resulting window to stop the animation.
+
+Finally, if `arg6=1`, then the program deletes the binary data in the folder `data`.
 
 
 ## Output
@@ -77,8 +83,9 @@ where the value `******` is a counter of the time step.
  * `WIDTH`      : size of the domain in y
  * `IC`         : inital condition, either `lattice`, `block`, or `uniform` (see below)
  * `SPREAD`     : how dispersed players should be initially
- * `R_COOP`     : radius of cooperating particle
- * `R_DEF`      : radius of defecting particle
+ * `R_COOP`     : radius of cooperating particle for pushing
+ * `R_DEF`      : radius of defecting particle for pushing
+ * `L`          : radius of all particles for reaction
  * `DECISION_MODEL` : 5 different rules (see below)
  * `a_00...`     : payoff matrix
  * `MARKOV_RATE` : intensity of jump process
@@ -104,7 +111,7 @@ It uses different modules (defined in separated files):
 | ----------------------------------|:-------------:|
 | `init_functions`                  | contains functions needed for initialization of program
 | `two_spec_iter`                   | updates `X`
-| `game_linear_vm`                  | updates `S` using linear voter model
+| `decision_strategies`             | updates `S` using various models
 | `fn_neighbors`                    | finds neighbors of all players
 | `fn_distance`                     | calculates distance between points using Euclidean metric
 | `fn_phi`                          | calculates values of the function `phi`

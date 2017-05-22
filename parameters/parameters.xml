@@ -1,25 +1,64 @@
 <?xml version="1.0"?>
 <parameters>
-  <N>1000</N>
+  <!-- number of players -->
+  <N>10000</N>
+
+  <!-- time step -->
   <DT>.01</DT>
-  <TIME>100</TIME>
-  <SPATIAL>1</SPATIAL>
+
+  <!-- number of periods -->
+  <TIME>1</TIME>
+
+  <!-- whether players push/repulse/diffuse -->
+  <SPATIAL>0</SPATIAL>
+
+  <!-- length of domain -->
   <LENGTH>25</LENGTH>
+
+  <!-- width of domain -->
   <WIDTH>25</WIDTH>
+
+  <!-- initial conditions: uniform, lattice, block -->
   <IC>uniform</IC>
+
+  <!-- how spread out initially players are -->
   <SPREAD>1</SPREAD>
-  <R_COOP>2.1</R_COOP>
-  <R_DEF>1.1</R_DEF>
-  <DECISION_MODEL>linear vm</DECISION_MODEL>
+
+  <!-- radius of pushing for cooperative players -->
+  <R_COOP>10.1</R_COOP>
+
+  <!-- radius of pushing for defective players -->
+  <R_DEF>6.1</R_DEF>
+
+  <!-- radius of reaction -->
+  <L>1.1</L>
+
+  <!-- decision making process: nonlinear vm, linear vm, norm vm, threshold vm, br, ising -->
+  <DECISION_MODEL>nonlinear vm</DECISION_MODEL>
+
+  <!-- coefficients of payoff matrix -->
   <a_00>1</a_00>
   <a_01>0</a_01>
   <a_10>0</a_10>
   <a_11>1</a_11>
-  <MARKOV_RATE>0.01</MARKOV_RATE>
+
+  <!-- constant for nonlinear vm -->
+  <gamma>0</gamma>
+
+  <!-- scaling of reaction rate for nonlinear vm -->
+  <MARKOV_RATE>2</MARKOV_RATE>
+
+  <!-- threshold for threshold vm -->
   <THRESHOLD>4</THRESHOLD>
+
+  <!-- constants for linear vm -->
   <COOP_CONST>0</COOP_CONST>
   <GUILT_CONST>0</GUILT_CONST>
+
+  <!-- constants for ising model -->
   <ISING_BETA>1</ISING_BETA>
   <ISING_H>-0.01</ISING_H>
-  <SEED_NUMBER>10</SEED_NUMBER>
+
+  <!-- random number generator seed -->
+  <SEED_NUMBER>11</SEED_NUMBER>
 </parameters>

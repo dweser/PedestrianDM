@@ -55,6 +55,9 @@ parameters::parameters(string file_path)
     // R_DEF
     R_DEF = atof(root->first_node("R_DEF")->value());
 
+    // L
+    L = atof(root->first_node("L")->value());
+
     // DECISION MODEL
     DECISION_MODEL = (string) (root->first_node("DECISION_MODEL")->value());
   
@@ -69,6 +72,9 @@ parameters::parameters(string file_path)
     
     // a_11
     a_11 = atof(root->first_node("a_11")->value());
+
+    // gamma
+    GAMMA = atof(root->first_node("gamma")->value());
    
     // MARKOV RATE
     MARKOV_RATE = atof(root->first_node("MARKOV_RATE")->value());

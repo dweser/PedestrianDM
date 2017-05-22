@@ -13,12 +13,7 @@
 #include "fn_neighbors.hpp"
 #include "fn_file_print.hpp"
 #include "str_fixed_length.hpp"
-#include "game_threshold_vm.hpp"
-#include "game_linear_vm.hpp"
-#include "game_norm_vm.hpp"
-#include "game_br.hpp"
-#include "game_ising.hpp"
-#include "nanoflann.hpp"
+#include "decision_strategies.hpp"
 
 #include <stdlib.h>
 #include <cstdlib>
@@ -51,7 +46,7 @@ int main(int argc, char *argv[])
     chdir("../bin/");
 
     // values calculated based on parameters
-    const int     NUM_DEFECT_INIT = round(N/2);
+    const int     NUM_DEFECT_INIT = round(.5*N); //round(N/2);
     const int     NTIME = floor(parameters.TIME/parameters.DT+.5);
     const int     NUM_THREADS = ceil((double) N/2000);
 
@@ -116,26 +111,32 @@ int main(int argc, char *argv[])
         tree   index(2 /*dim*/, xy, KDTreeSingleIndexAdaptorParams(200 /* max leaf */) );
         index.buildIndex();
 
-        // find neighbors
-        fn_neighbors(xy, state_old, neighbors, N, parameters.R_COOP, parameters.R_DEF, index);
+        // find neighbors for reaction, e.g. strategy update
+        fn_neighbors(xy, state_old, neighbors, N, parameters.L, parameters.L, index);
 
         // new states
         if (parameters.DECISION_MODEL == "linear vm")
         {
-            game_linear_vm(state, state_old, neighbors, parameters, NUM_THREADS);
+            dec_linear_vm(state, state_old, neighbors, parameters, NUM_THREADS);
         } else if (parameters.DECISION_MODEL == "norm vm")
         {
-            game_norm_vm(state, state_old, neighbors, parameters, NUM_THREADS);
+            dec_norm_vm(state, state_old, neighbors, parameters, NUM_THREADS);
+        } else if (parameters.DECISION_MODEL == "nonlinear vm")
+        {
+            dec_nonlinear_vm(state, state_old, neighbors, parameters, NUM_THREADS);
         } else if (parameters.DECISION_MODEL == "threshold vm")
         {
-            game_threshold_vm(state, state_old, neighbors, parameters, NUM_THREADS);
+            dec_threshold_vm(state, state_old, neighbors, parameters, NUM_THREADS);
         } else if (parameters.DECISION_MODEL == "br")
         {
-            game_br(state, state_old, neighbors, parameters, NUM_THREADS);
+            dec_br(state, state_old, neighbors, parameters, NUM_THREADS);
         } else
         {
-            game_ising(state, state_old, neighbors, parameters, NUM_THREADS);
+            dec_ising(state, state_old, neighbors, parameters, NUM_THREADS);
         }
+
+        // find neighbors for pushing, e.g. position update
+        fn_neighbors(xy, state_old, neighbors, N, parameters.R_COOP, parameters.R_DEF, index);
 
         // new xy-coordinates
         two_spec_iter(xy, dxdy, state, neighbors, parameters, NUM_THREADS);
